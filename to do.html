@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #app {
+            width: 300px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .task {
+            flex-grow: 1;
+        }
+        .actions {
+            margin-left: 10px;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #3fa69c;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>To-Do App</h1>
+        <input type="text" id="taskInput" placeholder="Add a new task">
+        <button onclick="addTask()">Add</button>
+        <ul id="pendingTasks">
+            <!-- Pending tasks will be added here -->
+        </ul>
+        <h2>Completed Tasks</h2>
+        <ul id="completedTasks">
+            <!-- Completed tasks will be added here -->
+        </ul>
+    </div>
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById("taskInput");
+            const taskText = taskInput.value.trim();
+
+            if (taskText === "") return;
+
+            const li = document.createElement("li");
+            const taskSpan = document.createElement("span");
+            taskSpan.textContent = taskText;
+            taskSpan.className = "task";
+            li.appendChild(taskSpan);
+
+            const completeButton = document.createElement("button");
+            completeButton.textContent = "Complete";
+            completeButton.onclick = function () {
+                toggleComplete(li);
+            };
+            completeButton.className = "actions";
+            li.appendChild(completeButton);
+
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.onclick = function () {
+                deleteTask(li);
+            };
+            deleteButton.className = "actions";
+            li.appendChild(deleteButton);
+
+            document.getElementById("pendingTasks").appendChild(li);
+            taskInput.value = "";
+        }
+
+        function toggleComplete(taskElement) {
+            taskElement.classList.toggle("completed");
+            const parentList = taskElement.parentElement;
+            if (parentList.id === "pendingTasks") {
+                document.getElementById("completedTasks").appendChild(taskElement);
+            } else {
+                document.getElementById("pendingTasks").appendChild(taskElement);
+            }
+        }
+
+        function deleteTask(taskElement) {
+            taskElement.remove();
+        }
+    </script>
+</body>
+</html>
